@@ -1,14 +1,20 @@
 {
   "agents": [
     {
-      "id": "competitor_agent",
-      "type": "competitor_watchdog",
-      "domain": "corporate",
+      "id": "seo_agent",
+      "type": "seo_optimizer",
+      "domain": "marketing",
       "params": {}
     },
     {
-      "id": "feedback_agent",
-      "type": "customer_feedback_analyzer",
+      "id": "email_agent",
+      "type": "smart_email_manager",
+      "domain": "marketing",
+      "params": {}
+    },
+    {
+      "id": "competitor_agent",
+      "type": "competitor_watchdog",
       "domain": "corporate",
       "params": {}
     },
@@ -17,70 +23,60 @@
       "type": "meeting_summarizer",
       "domain": "corporate",
       "params": {}
-    },
-    {
-      "id": "email_agent",
-      "type": "smart_email_manager",
-      "domain": "corporate",
-      "params": {}
     }
   ],
   "tasks": [
     {
-      "id": "competitor_analysis",
+      "id": "seo_task",
+      "type": "seo_optimization",
+      "domain": "marketing",
+      "agent_id": "seo_agent",
+      "params": {
+        "website_url": "https://example.com",
+        "keywords": "AI agents, multi-agent systems, productivity"
+      }
+    },
+    {
+      "id": "competitor_task",
       "type": "competitor_watchdog",
       "domain": "corporate",
       "agent_id": "competitor_agent",
       "params": {
-        "competitors": [
-          "Google",
-          "Meta",
-          "Sony"
-        ],
-        "market_segment": "Enterprise SaaS",
-        "search_terms": "new product launch, pricing changes, leadership change"
+        "competitors": "OpenAI, Anthropic, Google"
       }
     },
     {
-      "id": "feedback_analysis",
-      "type": "customer_feedback_analysis",
-      "domain": "corporate",
-      "agent_id": "feedback_agent",
-      "params": {
-        "feedback_data": "Customer survey results: 85% satisfaction overall. Negative feedback on UI complexity and loading times. Positive feedback on customer service and feature set. Key requests: dark mode, better mobile experience, and faster export options."
-      }
-    },
-    {
-      "id": "meeting_summary",
+      "id": "meeting_task",
       "type": "meeting_summarization",
       "domain": "corporate",
       "agent_id": "meeting_agent",
       "params": {
-        "meeting_text": "QUARTERLY PLANNING MEETING\nDate: July 15, 2023\nAttendees: Sarah (CEO), Mark (CTO), Jessica (CMO), David (CFO)\n\nSarah: Welcome everyone to our Q3 planning meeting. Let's start with a review of Q2 performance.\n\nDavid: Revenue was up 22% YoY, exceeding our target of 18%. Customer acquisition cost decreased by 5%.\n\nJessica: Marketing campaigns drove 30% more qualified leads than Q1. Social media engagement up 45%.\n\nMark: Development team completed the new API integration ahead of schedule. We've seen a 15% reduction in reported bugs.\n\nSarah: Great results. For Q3, I want to focus on our enterprise segment expansion and addressing customer feedback about our UI.\n\nMark: Based on feedback, we should prioritize UI redesign and performance optimization.\n\nJessica: I'll align our messaging to highlight the new UI improvements and target enterprise decision-makers.\n\nDavid: We have budget to hire 3 more developers and increase marketing spend by 15%.\n\nSarah: Let's also review what our competitors are doing. RivalTech just released a new analytics dashboard we should evaluate.\n\nMark: Their dashboard has features we lack, but we can implement similar functionality in Q4.\n\nSarah: Agreed. Let's make these priorities for Q3: 1) UI redesign, 2) Enterprise expansion, 3) Performance optimization, 4) Competitive feature analysis."
+        "meeting_text": "Marketing team met to discuss Q3 strategies. Key points: 1) Focus on SEO improvements based on analysis 2) Monitor competitor activities closely 3) Prepare quarterly report for leadership."
       }
     },
     {
-      "id": "email_management",
-      "type": "smart_email_management",
-      "domain": "corporate",
+      "id": "email_task",
+      "type": "email_campaign",
+      "domain": "marketing",
       "agent_id": "email_agent",
       "params": {
-        "email_content": "Subject: Q3 Strategic Direction and Action Items\n\nDear Leadership Team,\n\nI need to draft a comprehensive email summarizing our Q3 strategic direction based on our recent meeting, competitor analysis, and customer feedback. The email should outline our key initiatives, resource allocations, and expected outcomes.\n\nThe email will be sent to all department heads and should maintain a professional but motivating tone. Please include specific action items for each department with deadlines.\n\nThank you,\nSarah Johnson\nCEO"
+        "campaign_objective": "Announce website improvements and share competitive analysis",
+        "audience_segment": "Marketing department leaders"
       }
     }
   ],
   "connections": [
     {
-      "from": "competitor_analysis",
-      "to": "feedback_analysis"
+      "from": "seo_task",
+      "to": "email_task"
     },
     {
-      "from": "feedback_analysis",
-      "to": "meeting_summary"
+      "from": "competitor_task",
+      "to": "email_task"
     },
     {
-      "from": "meeting_summary",
-      "to": "email_management"
+      "from": "meeting_task",
+      "to": "email_task"
     }
   ]
 }

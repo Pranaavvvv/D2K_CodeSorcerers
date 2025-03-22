@@ -83,10 +83,17 @@ class CrewAPI:
         # This would typically load from a config or schema file
         params = {
             'corporate': {
-                'meeting_summarization': ['meeting_text'],
+                'meeting_summarization': ['meeting_text', 'pdf_path'],
                 'smart_email_management': ['email_content'],
                 'competitor_watchdog': ['competitors'],
-                'customer_feedback_analysis': ['feedback_data']
+                'customer_feedback_analysis': ['feedback_data', 'reviews_url', 'pdf_path']
+            },
+            'marketing': {
+                'seo_optimization': ['website_url', 'keywords', 'pdf_path'],
+                'competitor_watchdog': ['competitors', 'market_segment', 'pdf_path'],
+                'product_recommendation': ['customer_data', 'product_catalog', 'pdf_path'],
+                'social_media_post_creation': ['platform', 'topic', 'audience', 'objectives', 'pdf_path'],
+                'email_campaign': ['campaign_objective', 'audience_segment', 'previous_performance', 'pdf_path']
             }
         }
         

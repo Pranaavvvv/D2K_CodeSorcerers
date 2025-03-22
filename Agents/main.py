@@ -2,8 +2,8 @@ import os
 from dotenv import load_dotenv
 from crewai import Crew, Task, Agent
 from crewai import LLM
-from agents import CorporateAgents
-from tasks import CorporateTasks
+from agents import CorporateAgents, MarketingAgents
+from tasks import CorporateTasks, MarketingTasks
 
 # Load environment variables
 load_dotenv()
@@ -72,6 +72,10 @@ class CrewNetwork:
             "corporate": {
                 "agents": CorporateAgents(),
                 "tasks": CorporateTasks()
+            },
+            "marketing": {
+                "agents": MarketingAgents(),
+                "tasks": MarketingTasks()
             }
         }
     

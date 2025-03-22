@@ -30,13 +30,44 @@ def load_task_definition(domain, task_type, params=None):
     description = description_match.group(1).strip() if description_match else ""
     expected_output = expected_output_match.group(1).strip() if expected_output_match else ""
     
-    # Replace parameters if provided
+    # Process conditional sections with {#if param} ... {/if}
     if params:
+        # Replace parameters
         for key, value in params.items():
             placeholder = '{' + key + '}'
-            description = description.replace(placeholder, value)
+            description = description.replace(placeholder, str(value) if value is not None else "")
+        
+        # Handle conditional blocks
+        description = process_conditionals(description, params)
     
     return {
         'description': description,
         'expected_output': expected_output
-    } 
+    }
+
+def process_conditionals(text, params):
+    """
+    Process conditional blocks in the format {#if param}...{/if}
+    
+    Args:
+        text (str): The text containing conditional blocks
+        params (dict): Dictionary of parameters
+        
+    Returns:
+        str: Processed text with conditional blocks evaluated
+    """
+    # Find all conditional blocks
+    pattern = r'{#if (\w+)}(.*?){\/if}'
+    
+    def replace_conditional(match):
+        param_name = match.group(1)
+        content = match.group(2)
+        
+        # If parameter exists and has a truthy value, include the content
+        if param_name in params and params[param_name]:
+            return content
+        return ""  # Otherwise, remove the block
+    
+    # Replace all conditional blocks using regex substitution
+    processed_text = re.sub(pattern, replace_conditional, text, flags=re.DOTALL)
+    return processed_text 

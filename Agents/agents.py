@@ -57,3 +57,70 @@ class CorporateAgents:
             verbose=True,
             llm=self.llm
         )
+
+
+class MarketingAgents:
+    def __init__(self):
+        # Initialize LLM
+        self.llm = LLM(
+            model="gemini/gemini-2.0-flash",
+            api_key=os.getenv("GEMINI_API_KEY")
+        )
+        # Instantiate tools 
+        self.serper_tool = SerperDevTool()
+        self.scraper_tool = ScrapeWebsiteTool()
+    
+    def create_seo_optimizer_agent(self):
+        definition = load_agent_definition('marketing_agents', 'seo_optimizer')
+        return Agent(
+            role=definition['role'],
+            goal=definition['goal'],
+            backstory=dedent(definition['backstory']),
+            tools=[self.serper_tool, self.scraper_tool],
+            verbose=True,
+            llm=self.llm
+        )
+    
+    def create_competitor_watchdog_agent(self):
+        definition = load_agent_definition('marketing_agents', 'competitor_watchdog')
+        return Agent(
+            role=definition['role'],
+            goal=definition['goal'],
+            backstory=dedent(definition['backstory']),
+            tools=[self.serper_tool, self.scraper_tool],
+            verbose=True,
+            llm=self.llm
+        )
+    
+    def create_product_recommendation_agent(self):
+        definition = load_agent_definition('marketing_agents', 'product_recommendation')
+        return Agent(
+            role=definition['role'],
+            goal=definition['goal'],
+            backstory=dedent(definition['backstory']),
+            tools=[self.serper_tool, self.scraper_tool],
+            verbose=True,
+            llm=self.llm
+        )
+    
+    def create_post_creator_agent(self):
+        definition = load_agent_definition('marketing_agents', 'post_creator')
+        return Agent(
+            role=definition['role'],
+            goal=definition['goal'],
+            backstory=dedent(definition['backstory']),
+            tools=[self.serper_tool, self.scraper_tool],
+            verbose=True,
+            llm=self.llm
+        )
+    
+    def create_smart_email_manager_agent(self):
+        definition = load_agent_definition('marketing_agents', 'smart_email_manager')
+        return Agent(
+            role=definition['role'],
+            goal=definition['goal'],
+            backstory=dedent(definition['backstory']),
+            tools=[self.serper_tool, self.scraper_tool],
+            verbose=True,
+            llm=self.llm
+        )

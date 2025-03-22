@@ -1,11 +1,23 @@
 # Customer Feedback Analysis Task
 
 ## Description
-Analyze the following customer feedback data:
+Analyze customer feedback from the following source:
 
+{#if reviews_url}
+Customer reviews website URL: `{reviews_url}`
+
+Use the ScrapeWebsiteTool to extract reviews and feedback data from this URL. Make sure to focus on extracting ratings, review text, dates, and any other relevant information.
+{/if}
+
+{#if feedback_data}
 ```
 {feedback_data}
 ```
+{/if}
+
+{#if pdf_path}
+I am providing a PDF file located at: `{pdf_path}` containing customer feedback. You should use the PDFSearchTool to extract and analyze this content.
+{/if}
 
 1. Identify key patterns, trends, and common themes in the customer feedback.
 2. Categorize feedback into positive points, negative points, and suggestions for improvement.

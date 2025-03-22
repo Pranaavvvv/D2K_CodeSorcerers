@@ -1,11 +1,17 @@
 # Meeting Summarization Task
 
 ## Description
-Summarize the key points, decisions, action items, and important discussions from the following meeting minutes:
+Summarize the key points, decisions, action items, and important discussions from the following meeting content:
 
+{#if pdf_path}
+I am providing a PDF file located at: `{pdf_path}` containing the meeting transcript or notes. You should use the PDFSearchTool to extract and analyze this content.
+{/if}
+
+{#if meeting_text}
 ```
 {meeting_text}
 ```
+{/if}
 
 1. Extract all decisions made during the meeting.
 2. Identify and list all action items, including responsible parties and deadlines if available.
