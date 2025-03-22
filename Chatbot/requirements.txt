@@ -1,0 +1,9 @@
+flask
+pinecone
+langchain
+langchain-google-genai
+google-generativeai
+werkzeug
+python-dotenv
+pypdf
+tiktoken
