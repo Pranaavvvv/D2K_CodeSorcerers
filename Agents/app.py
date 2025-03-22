@@ -3,6 +3,8 @@ import sys
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
+from main import CrewNetwork, from_frontend_data
+from agents import CorporateAgents, MarketingAgents
 
 # Add the current directory to the path so imports work correctly
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -16,7 +18,7 @@ load_dotenv()
 
 # Initialize app
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app, resources={r"/*": {"origins": "*"}})  # Enable CORS for all routes
 
 # Initialize the CrewAPI
 api = CrewAPI()
@@ -133,6 +135,29 @@ def run_network(network_id):
     
     return jsonify(response)
 
+@app.route('/agents', methods=['GET'])
+def get_agents():
+    try:
+        corporate_agents = CorporateAgents()
+        marketing_agents = MarketingAgents()
+        
+        agents = []
+        agents.extend(corporate_agents.get_available_agents())
+        agents.extend(marketing_agents.get_available_agents())
+        
+        return jsonify(agents)
+    except Exception as e:
+        print(f"Error getting agents: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/execute', methods=['POST'])
+def execute_network():
+    network_config = request.json
+    network = from_frontend_data(network_config)
+    crew = network.build_crew()
+    result = crew.run()
+    return jsonify({'results': result})
+
 if __name__ == '__main__':
     print("Starting server on http://localhost:4000")
-    app.run(debug=True, host='0.0.0.0', port=4000) 
+    app.run(debug=True, host='0.0.0.0', port=4000)

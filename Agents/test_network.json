@@ -1,82 +1,51 @@
 {
   "agents": [
     {
-      "id": "seo_agent",
-      "type": "seo_optimizer",
-      "domain": "marketing",
-      "params": {}
-    },
-    {
-      "id": "email_agent",
-      "type": "smart_email_manager",
-      "domain": "marketing",
-      "params": {}
-    },
-    {
-      "id": "competitor_agent",
-      "type": "competitor_watchdog",
-      "domain": "corporate",
-      "params": {}
-    },
-    {
-      "id": "meeting_agent",
+      "id": "agent1",
       "type": "meeting_summarizer",
       "domain": "corporate",
+      "params": {}
+    },
+    {
+      "id": "agent2",
+      "type": "seo_optimizer",
+      "domain": "marketing",
       "params": {}
     }
   ],
   "tasks": [
     {
-      "id": "seo_task",
-      "type": "seo_optimization",
-      "domain": "marketing",
-      "agent_id": "seo_agent",
-      "params": {
-        "website_url": "https://example.com",
-        "keywords": "AI agents, multi-agent systems, productivity"
-      }
-    },
-    {
-      "id": "competitor_task",
-      "type": "competitor_watchdog",
-      "domain": "corporate",
-      "agent_id": "competitor_agent",
-      "params": {
-        "competitors": "OpenAI, Anthropic, Google"
-      }
-    },
-    {
-      "id": "meeting_task",
+      "id": "task1",
       "type": "meeting_summarization",
       "domain": "corporate",
-      "agent_id": "meeting_agent",
+      "agent_id": "agent1",
       "params": {
-        "meeting_text": "Marketing team met to discuss Q3 strategies. Key points: 1) Focus on SEO improvements based on analysis 2) Monitor competitor activities closely 3) Prepare quarterly report for leadership."
+        "pdf_path": "C:\\\\Users\\\\galah\\\\MyCodes\\\\Projectz\\\\Hackathons\\\\D2K\\\\Agents\\\\uploads\\\\Samsung_S25_Minutes_of_Meeting.pdf"
       }
     },
     {
-      "id": "email_task",
-      "type": "email_campaign",
+      "id": "task2",
+      "type": "seo_optimization",
       "domain": "marketing",
-      "agent_id": "email_agent",
+      "agent_id": "agent2",
       "params": {
-        "campaign_objective": "Announce website improvements and share competitive analysis",
-        "audience_segment": "Marketing department leaders"
+        "website_url": "https://samsung.com",
+        "keywords": [
+          "Samsung Galaxy S25",
+          "Samsung S25 specs",
+          "AI-powered smartphone",
+          "Samsung Unpacked 2026",
+          "best Android phone 2026",
+          "Exynos 2500 performance",
+          "Samsung One UI AI features"
+        ]
       }
     }
   ],
   "connections": [
     {
-      "from": "seo_task",
-      "to": "email_task"
-    },
-    {
-      "from": "competitor_task",
-      "to": "email_task"
-    },
-    {
-      "from": "meeting_task",
-      "to": "email_task"
+      "from": "task1",
+      "to": "task2"
     }
   ]
 }

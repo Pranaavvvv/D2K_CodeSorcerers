@@ -4,6 +4,8 @@ from crewai import Crew, Task, Agent
 from crewai import LLM
 from agents import CorporateAgents, MarketingAgents
 from tasks import CorporateTasks, MarketingTasks
+from datetime import datetime
+import json
 
 # Load environment variables
 load_dotenv()
@@ -204,15 +206,7 @@ class CrewNetwork:
         return task_ordering
     
     def build_crew(self, name="Dynamic Crew", description=None):
-        """Build a crew from the network.
-        
-        Args:
-            name (str): The name of the crew.
-            description (str): The description of the crew.
-        
-        Returns:
-            Crew: A CrewAI Crew object.
-        """
+        """Build a crew from the network."""
         # Make sure agents and tasks are instantiated
         if not all(node.agent_instance for node in self.agent_nodes.values()):
             self.instantiate_agents()
@@ -220,21 +214,56 @@ class CrewNetwork:
         if not all(node.task_instance for node in self.task_nodes.values()):
             self.instantiate_tasks()
         
-        # Get all agents and tasks
+        # Get all agents and tasks in order
         agents = self.get_all_agents()
         tasks = self.get_all_tasks()
         
-        # Create the crew
+        # Create the crew with a callback to combine outputs
         crew = Crew(
             agents=agents,
             tasks=tasks,
             verbose=True,
             process='sequential',
             name=name,
-            description=description or f"A crew of {len(agents)} agents working on {len(tasks)} tasks."
+            description=description or f"A crew of {len(agents)} agents working on {len(tasks)} tasks.",
+            output_handler=self.combine_outputs
         )
         
         return crew
+
+    def combine_outputs(self, outputs):
+        """Combine sequential task outputs into a single coherent report."""
+        combined_report = {
+            "workflow_name": self.name,
+            "execution_time": datetime.now().isoformat(),
+            "sequential_results": [],
+            "final_summary": {}
+        }
+
+        # Process each task output in sequence
+        for task_id, output in outputs.items():
+            task_node = self.task_nodes[task_id]
+            task_result = {
+                "task_id": task_id,
+                "task_type": task_node.task_type,
+                "agent": task_node.agent_node.id,
+                "output": output
+            }
+            combined_report["sequential_results"].append(task_result)
+            
+            # Merge relevant data into final summary
+            if isinstance(output, dict):
+                combined_report["final_summary"].update(output)
+            else:
+                try:
+                    # Try to parse string output as JSON if possible
+                    output_dict = json.loads(output)
+                    combined_report["final_summary"].update(output_dict)
+                except:
+                    # If not JSON, store as text
+                    combined_report["final_summary"][f"task_{task_id}_output"] = output
+
+        return combined_report
 
 def example_corporate_network():
     """Create an example corporate network.
