@@ -1,0 +1,41 @@
+{
+  "agents": [
+    {
+      "id": "summarizer",
+      "type": "meeting_summarizer",
+      "domain": "corporate",
+      "params": {
+        "llm": "gpt-4"
+      }
+    },
+    {
+      "id": "email_manager",
+      "type": "smart_email_manager",
+      "domain": "corporate",
+      "params": {
+        "llm": "gpt-4"
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "id": "summarize_meeting",
+      "type": "meeting_summarization",
+      "domain": "corporate",
+      "agent_id": "summarizer",
+      "params": {
+        "meeting_text": "Discussion about Q3 results..."
+      }
+    },
+    {
+      "id": "draft_email",
+      "type": "email_management",
+      "domain": "corporate",
+      "agent_id": "email_manager",
+      "params": {
+        "email_content": "Need to communicate Q3 results..."
+      }
+    }
+  ],
+  "connections": []
+}
